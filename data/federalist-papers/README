@@ -1,0 +1,36 @@
+README
+
+This data directory contains the following files and scripts:
+
+PROJECT_GUTENBERG_LICENSE.txt - licence (excerpted from end of pg1404.txt file)
+
+pg1404.txt - text of the federalist papers, minor irregularities cleaned up
+pg1404.txt.as.downloaded - text of the federalist papers as downloaded from:
+ http://www.gutenberg.org/cache/epub/1404/pg1404.txt
+
+> diff pg1404.txt pg1404.txt.as.downloaded
+3569,3571c3569,3570
+< Confederation to Preserve the Union) 
+< 
+< For the New York Packet. Friday, December 7, 1787
+---
+> Confederation to Preserve the Union) For the New York Packet. Friday,
+> December 7, 1787
+8397,8399c8396
+< Sustained
+< 
+< For the New York Packet. Friday, January 18, 1788.
+---
+> Sustained For the New York Packet. Friday, January 18, 1788.
+12679c12676
+< For the Independent Journal. Wednesday, February 20, 1788.
+---
+> Considered For the Independent Journal Wednesday, February 20, 1788.
+
+get_fedpapers.sh - shell script that creates sub-directory called "texts"
+ and populates it with the individual papers, 1 per file, filename is "paper_XX.txt"
+
+
+
+
+
