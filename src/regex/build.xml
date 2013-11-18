@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-regex-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <classpath refid="classpath"/>
+      <src path="src/"/>
+      <exclude name="**/FragmentsRegex.java"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <property name="regex"
+            value="aa"/>
+  <property name="text"
+            value="aaaabbaab"/>
+
+  <target name="regex-match"
+          depends="jar">
+    <java classname="com.colloquial.regex.RegexMatch"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${regex}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+  <target name="regex-find"
+          depends="jar">
+    <java classname="com.colloquial.regex.RegexFind"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${regex}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+  <target name="regex-find-verbose"
+          depends="jar">
+    <java classname="com.colloquial.regex.RegexFindVerbose"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${regex}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+  <target name="regex-group"
+          depends="jar">
+    <java classname="com.colloquial.regex.RegexGroup"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${regex}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+  <property name="replacement" value="X"/>
+  <target name="regex-replace"
+          depends="jar">
+    <java classname="com.colloquial.regex.RegexReplace"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${regex}"/>
+      <arg value="${replacement}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+</project>

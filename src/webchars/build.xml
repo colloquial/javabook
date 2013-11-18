@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-webchars-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+    <pathelement location="../../lib/tj-utils-1.0.jar"/>
+    <pathelement location="lib/jdom-2.0.4.jar"/>
+    <pathelement location="lib/nekohtml.jar"/>
+    <pathelement location="lib/xercesMinimal.jar"/>
+    <pathelement location="lib/json.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+<!--      <compilerarg value="-Xlint:all"/> -->
+      <classpath refid="classpath"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <target name="http-headers" depends="jar"
+   description="show HTTP response headers">
+    <java classname="com.colloquial.webchars.EchoHttpHeader"
+        fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${url}"/>
+    </java>
+  </target>
+
+  <target name="http-body" depends="jar"
+   description="show HTTP response body">
+    <java classname="com.colloquial.webchars.EchoHttpBody"
+        fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${url}"/>
+    </java>
+  </target>
+
+  <target name="trace-sax" depends="jar"
+   description="show HTTP response body">
+    <java classname="com.colloquial.webchars.TraceSaxEvents"
+        fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${url}"/>
+    </java>
+  </target>
+
+  <target name="url-encode" depends="jar"
+   description="show HTTP response body">
+    <java classname="com.colloquial.webchars.EncodeDecodeUrl"
+        fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${url}"/>
+    </java>
+  </target>
+
+  <target name="gen-xml" depends="jar"
+   description="generate xml">
+    <java classname="com.colloquial.webchars.JDomGenerateXml"
+        fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${encoding}"/>
+     <arg value ="${file}"/>
+    </java>
+  </target>
+
+  <target name="parse-html" depends="jar"
+   description="parse html">
+    <java classname="com.colloquial.webchars.NekoHtmlParse"
+        fork="true">
+      <classpath refid="classpath"/>
+     <arg value ="${html.file}"/>
+    </java>
+  </target>
+
+  <property name="encoding" value=""/>
+  <target name="parse-encoding" depends="jar"
+   description="parse html using specified encoding">
+    <java classname="com.colloquial.webchars.NekoHtmlEncoding"
+        fork="true">
+      <classpath refid="classpath"/>
+     <arg value ="${html.file}"/>
+     <arg value ="${encoding}"/>
+    </java>
+  </target>
+
+  <target name="get-json" depends="jar"
+   description="get json from data feed">
+    <java classname="com.colloquial.webchars.GetJson"
+        fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+  <target name="gen-json" depends="jar"
+   description="generate json object programmatically">
+    <java classname="com.colloquial.webchars.GenJson"
+        fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+</project>
+
+
+
+

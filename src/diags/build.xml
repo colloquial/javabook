@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-diags-${version}.jar"/>
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete file="toast.txt"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <target name="get-encoding"
+          depends="jar">
+    <java classname="com.colloquial.diags.GetDefaults"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <target name="verify-chars"
+          depends="jar">
+    <java classname="com.colloquial.diags.VerifyChars"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <target name="toast"
+          depends="jar">
+    <java classname="com.colloquial.diags.Toast"
+          classpath="${jar}"
+          fork="true">
+      <jvmarg value="-Dfile.encoding=UTF-8"/>
+    </java>
+    <concat>
+      <fileset file="toast.txt"/>
+    </concat>
+  </target>
+
+</project>

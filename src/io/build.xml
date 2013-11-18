@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-io-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+    <pathelement location="lib/ant-1.8.1.jar"/>
+  </path>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <classpath refid="classpath"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <property name="file.in" value="src/com/colloquial/io/FileByteCount.java"/>
+  <target name="file-byte-count"
+          depends="jar">
+    <java classname="com.colloquial.io.FileByteCount"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${file.in}"/>
+    </java>
+  </target>
+
+  <target name="file-dump"
+          depends="jar">
+    <java classname="com.colloquial.io.FileDump"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${file.in}"/>
+    </java>
+  </target>
+
+  <target name="list-roots"
+          depends="jar">
+    <java classname="com.colloquial.io.ListRoots"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <target name="file-properties"
+          depends="jar">
+    <java classname="com.colloquial.io.FileProperties"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${file.in}"/>
+    </java>
+  </target>
+
+  <target name="filter-files"
+          depends="jar">
+    <java classname="com.colloquial.io.FilterFiles"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${dir}"/>
+      <arg value="${sfx}"/>
+    </java>
+  </target>
+
+  <property name="file.out" value="file.out.tmp"/>
+  <target name="copy-files"
+          depends="jar">
+    <java classname="com.colloquial.io.FileProperties"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${file.in}"/>
+      <arg value="${file.out}"/>
+    </java>
+  </target>
+
+  <property name="url.in" value="http://google.com/webhp?q=dirichlet"/>
+  <target name="url-properties"
+          depends="jar">
+    <java classname="com.colloquial.io.UrlProperties"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${url.in}"/>
+    </java>
+  </target>
+
+  <target name="url-read"
+          depends="jar">
+    <java classname="com.colloquial.io.ReadUrl"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${url.in}"/>
+    </java>
+  </target>
+
+
+  <property name="enc.in" value="UTF-8"/>
+  <property name="enc.out" value="UTF-16LE"/>
+  <target name="file-decode-encode"
+          depends="jar">
+    <java classname="com.colloquial.io.FileDecodeEncode"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${file.in}"/>
+      <arg value="${enc.in}"/>
+      <arg value="${file.out}"/>
+      <arg value="${enc.out}"/>
+    </java>
+  </target>
+
+  <property name="file.uncompressed" value="${file.in}"/>
+  <property name="file.gzipped" value="temp.gzipped"/>
+  <target name="file-gzip"
+          depends="jar">
+    <java classname="com.colloquial.io.FileGZIP"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${file.uncompressed}"/>
+      <arg value="${file.gzipped}"/>
+    </java>
+  </target>
+
+  <property name="file.ungzipped" value="temp.ungzipped"/>
+  <target name="file-ungzip"
+          depends="jar">
+    <java classname="com.colloquial.io.FileUnGZIP"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${file.gzipped}"/>
+      <arg value="${file.ungzipped}"/>
+    </java>
+  </target>
+
+  <property name="file.in.zip" 
+            value="build/demo-archive.zip"/>
+  <target name="example-zip">
+    <mkdir dir="build/archive/abc"/>    
+    <echo message="Hello" 
+          encoding="UTF-8"
+          file="build/archive/hello.txt"/>
+    <echo message="Goodbye" 
+          encoding="UTF-8"
+          file="build/archive/abc/bye.txt"/>
+    <echo message="Thanks for all the fish" 
+          encoding="UTF-8"
+          file="build/archive/abc/ps.txt"/>
+    <zip destfile="${file.in.zip}"
+         basedir="build/archive" 
+         encoding="UTF-8"/>
+  </target>
+      
+  
+  <target name="file-zip-view"
+          depends="jar">
+    <java classname="com.colloquial.io.FileZipView"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${file.in.zip}"/>
+    </java>
+  </target>
+
+  <property name="resource.jar"
+            value="build/demo-resource.jar"/>
+  <target name="example-resource-jar">
+    <mkdir dir="build/resources/com/colloquial/io"/>
+    <echo message="Hello from the jar."
+          encoding="UTF-8"
+          file="build/resources/com/colloquial/io/hello.txt"/>
+    <echo message="Goodbye from the jar."
+          encoding="UTF-8"
+          file="build/resources/com/colloquial/io/goodbye.txt"/>
+    <echo message="I'm a jar full of resources."
+          encoding="UTF-8"
+          file="build/resources/READ-ME.txt"/>
+    <jar destfile="${resource.jar}">
+      <fileset dir="build/resources"
+               includes="**/*.txt"/>
+    </jar>
+  </target>
+
+  <property name="resource.name"
+            value="hello.txt"/>
+  <target name="resource-input"
+          depends="jar">
+    <java classname="com.colloquial.io.ResourceInput"
+          fork="true">
+      <classpath>
+        <pathelement location="${jar}"/>
+        <pathelement location="${resource.jar}"/>
+      </classpath>
+      <arg value="${resource.name}"/>
+    </java>
+  </target>
+
+
+  <target name="object-io"
+          depends="jar">
+    <java classname="com.colloquial.io.ObjectIo"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <target name="serial-proxied"
+          depends="jar">
+    <java classname="com.colloquial.io.SerialProxied"
+          classpathref="classpath"
+          fork="true">
+    </java>
+  </target>
+
+  <property name="tar.file"
+            value="data/foo.tar"/>
+  <property name="gzipped"
+            value="true"/>
+  <target name="file-tar-view"
+          depends="jar">
+    <java classname="com.colloquial.io.FileTarView"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${tar.file}"/>
+      <arg value="${gzipped}"/>
+    </java>
+  </target>
+
+  <target name="serialize-demo"
+          depends="jar">
+    <java classname="com.colloquial.io.SerializationDemo"
+          classpath="${jar}"
+          fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+</project>

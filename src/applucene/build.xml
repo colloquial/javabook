@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-applucene-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+    <pathelement location="lib/lucene-core-4.5.1.jar"/>
+    <pathelement location="lib/lucene-analyzers-common-4.5.1.jar"/>
+    <pathelement location="lib/lucene-misc-4.5.1.jar"/>
+    <pathelement location="lib/lucene-queryparser-4.5.1.jar"/>
+  </path>
+
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac classpathref="classpath"
+           debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <target name="doc-demo"
+          depends="jar">
+    <java classname="com.colloquial.applucene.DocDemo"
+          classpathref="classpath"
+          fork="true">
+    </java>
+  </target>
+
+  <target name="date-demo"
+          depends="jar">
+    <java classname="com.colloquial.applucene.DateDemo"
+          classpathref="classpath"
+          fork="true">
+    </java>
+  </target>
+
+  <property name="field.name" value="foo"/>
+  <property name="text"
+            value="The note says, 'Mr. Sutton-Smith owes $15.20.'"/>
+  <target name="lucene-analysis"
+          depends="jar">
+    <java classname="com.colloquial.applucene.LuceneAnalysis"
+          classpathref="classpath"
+          fork="true">
+      <arg value="${field.name}"/>
+      <arg value="${text}"/>
+    </java>
+  </target>
+
+  <property name="inputs"
+            value="The Molecular Biology of the Cell, 9th Edition."/>
+  <target name="lucene-tokenize"
+          depends="jar">
+    <java classname="com.colloquial.applucene.LuceneTokenize"
+          classpathref="classpath"
+          fork="true">
+      <arg value="${inputs}"/>
+    </java>
+  </target>
+
+  <property name="lucene.dir" 
+            value="../../data/federalist-papers/lucene"/>
+  <property name="query" 
+            value="Powers of the Judiciary"/>
+  <property name="max.hits" 
+            value="10"/>
+  <target name="lucene-search"
+          depends="jar">
+    <java classname="com.colloquial.applucene.LuceneSearch"
+          classpathref="classpath"
+          fork="true">
+      <arg value="${lucene.dir}"/>
+      <arg value="${query}"/>
+      <arg value="${max.hits}"/>
+    </java>
+  </target>
+
+  <property name="field" 
+            value="text"/>
+  <property name="token" 
+            value="zebra"/>
+  <target name="lucene-delete"
+          depends="jar">
+    <java classname="com.colloquial.applucene.LuceneDelete"
+          classpathref="classpath"
+          fork="true">
+      <arg value="${lucene.dir}"/>
+      <arg value="${field}"/>
+      <arg value="${token}"/>
+    </java>
+  </target>
+
+
+  <property name="train.dir"
+            value="../../data/20news-bydate-train"/>
+  <property name="test.dir"
+            value="../../data/20news-bydate-test"/>
+  <property name="newsgroups.index" 
+            value="../../data/20news-bydate-lucene-lc"/>
+  <property name="analyzer" 
+            value="lc"/>
+  <target name="classify"
+          depends="jar">
+    <java classname="com.colloquial.applucene.ClassifyNewsgroups"
+          classpathref="classpath"
+          fork="true">
+      <arg value ="${train.dir}"/>
+      <arg value="${newsgroups.index}"/>
+      <arg value ="${test.dir}"/>
+      <arg value ="${analyzer}"/>
+    </java>
+  </target>
+
+
+</project>

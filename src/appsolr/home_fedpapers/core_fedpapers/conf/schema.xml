@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="fedpapers" version="1.5">
+
+  <fields>
+    <field name="number" type="int"
+           indexed="true" stored="true"
+           required="true" multiValued="false"/> 
+    <field name="title" type="text_std_analyzer"
+           indexed="true" stored="true"
+           required="true" multiValued="false"/>
+    <field name="author" type="string"
+           indexed="true" stored="true"
+           required="true" multiValued="true"/> 
+    <field name="pubName" type="string"
+           indexed="true" stored="true"
+           required="true" multiValued="false"/> 
+    <field name="pubDate" type="date"
+           indexed="true" stored="true"
+           required="true" multiValued="false"/> 
+    <field name="text" type="text_std_analyzer"
+           indexed="true" stored="true"
+           required="true" multiValued="true"/>
+    <field name="_version_" type="long"
+           indexed="true" stored="true"/>
+  </fields>
+
+  <types>
+    <fieldType name="date" class="solr.TrieDateField"/>
+    <fieldType name="int" class="solr.TrieIntField"/>
+    <fieldType name="long" class="solr.TrieLongField"/>
+    <fieldType name="string" class="solr.StrField"/>
+    <fieldType name="text_std_analyzer" class="solr.TextField"
+               positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.StopFilterFactory"
+                ignoreCase="true"
+                words="lucene_english_stopwords.txt"
+                enablePositionIncrements="true"/>
+      </analyzer>
+    </fieldType>
+  </types>
+
+  <uniqueKey>number</uniqueKey>
+
+  <!-- copy title field to text field -->
+   <copyField source="title" dest="text"/>
+
+</schema>

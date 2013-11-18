@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<foo> 
+ tok1 
+ <bar> tok2 </bar>  tok3 
+ <bar> tok4 
+           tok5 </bar>
+ J&#xF6;rg
+</foo>

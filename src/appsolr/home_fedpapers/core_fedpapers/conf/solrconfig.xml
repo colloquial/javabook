@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config>
+  <luceneMatchVersion>LUCENE_45</luceneMatchVersion>
+  <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
+
+  <lib dir="../../lib/" regex=".*\.jar" />
+
+  <dataDir>${solr.data.dir:}</dataDir>
+
+  <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+  <updateHandler class="solr.DirectUpdateHandler2">
+    <updateLog>
+      <str name="dir">${solr.data.dir:}</str>
+    </updateLog>
+  </updateHandler>
+
+  <!-- Request Handlers 
+       http://wiki.apache.org/solr/SolrRequestHandler
+
+Incoming queries will be dispatched to a specific handler by name
+based on the path specified in the request.
+
+Legacy behavior: If the request path uses "/select" but no Request
+Handler has that name, and if handleSelect="true" has been specified in
+the requestDispatcher, then the Request Handler is dispatched based on
+the qt parameter.  Handlers without a leading '/' are accessed this way
+like so: http://host/app/[core/]select?qt=name  If no qt is
+given, then the requestHandler that declares default="true" will be
+used or the one named "standard".
+
+If a Request Handler is declared with startup="lazy", then it will
+not be initialized until the first request that uses it.
+  -->
+  <requestDispatcher handleSelect="true" >
+    <requestParsers enableRemoteStreaming="false" multipartUploadLimitInKB="2048" formdataUploadLimitInKB="2048"/>
+  </requestDispatcher>
+
+  <requestHandler name="/select" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="df">text</str>
+      <str name="fl">score,number,title</str>
+      <int name="rows">5</int>
+    </lst>
+  </requestHandler>
+
+  <requestHandler name="standard" class="solr.StandardRequestHandler" default="true"/>
+
+  <requestHandler name="/get" class="solr.RealTimeGetHandler">
+    <lst name="defaults">
+      <str name="omitHeader">true</str>
+    </lst>
+  </requestHandler>  
+
+  <requestHandler name="/analysis/field" startup="lazy" class="solr.FieldAnalysisRequestHandler"/>
+
+  <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
+
+  <requestHandler name="/admin/" class="solr.admin.AdminHandlers"/>
+
+  <requestHandler name="/admin/ping" class="solr.PingRequestHandler"/>
+
+  <requestHandler name="/debug/dump" class="solr.DumpRequestHandler" >
+    <lst name="defaults">
+      <str name="echoParams">explicit</str> 
+      <str name="echoHandler">true</str>
+    </lst>
+  </requestHandler>
+
+  <!-- Spellcheck Example -->
+  <searchComponent name="spellcheck" class="solr.SpellCheckComponent">
+    <str name="queryAnalyzerFieldType">text_std_analyzer</str>
+
+    <lst name="spellchecker">
+      <str name="name">direct</str>
+      <str name="classname">solr.DirectSolrSpellChecker</str>
+      <str name="field">text</str>
+      <str name="distanceMeasure">internal</str>
+      <float name="accuracy">0.5</float>
+      <int name="maxEdits">2</int>
+      <int name="minPrefix">1</int>
+      <int name="maxInspections">5</int>
+      <int name="minQueryLength">4</int>
+      <float name="maxQueryFrequency">0.01</float>
+    </lst>
+
+    <lst name="spellchecker">
+      <str name="name">wordbreak</str>
+      <str name="classname">solr.WordBreakSolrSpellChecker</str>      
+      <str name="field">text</str>
+      <str name="combineWords">true</str>
+      <str name="breakWords">true</str>
+      <int name="maxChanges">10</int>
+    </lst>
+  </searchComponent>
+
+  <requestHandler name="/spell" class="solr.SearchHandler"
+                  startup="lazy">
+    <lst name="defaults">
+      <str name="df">text</str>
+      <str name="spellcheck">on</str>
+      <str name="spellcheck.dictionary">direct</str>
+      <str name="spellcheck.dictionary">wordbreak</str>
+      <str name="spellcheck.count">10</str>
+      <str name="spellcheck.alternativeTermCount">5</str>
+      <str name="spellcheck.maxResultsForSuggest">5</str>       
+      <str name="spellcheck.extendedResults">true</str>       
+    </lst>
+    <arr name="last-components">
+      <str>spellcheck</str>
+    </arr>
+  </requestHandler>
+</config>
+

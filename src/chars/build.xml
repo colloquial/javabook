@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-chars-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+    <pathelement location="lib/icu4j-4_4_1.jar"/>
+  </path>
+            
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <classpath refid="classpath"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <target name="available-charsets"
+          depends="jar">
+    <java classname="com.colloquial.chars.SupportedEncodings"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <property name="toBytes"
+            value="UTF-8"/>
+  <property name="toString"
+            value="Latin1"/>
+
+  <target name="byte-to-string"
+          depends="jar">
+    <java classname="com.colloquial.chars.ByteToString"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${toBytes}"/>
+      <arg value="${toString}"/>
+    </java>
+  </target>
+
+  <target name="validate-utf16"
+          depends="jar">
+    <java classname="com.colloquial.chars.ValidateUtf16"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+
+  <target name="detect-encoding"
+          depends="jar">
+    <java classname="com.colloquial.chars.DetectEncoding"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${bytes}"/>
+      <arg value="${decode}"/>
+    </java>
+  </target>
+
+
+  <target name="normalize-unicode"
+          depends="jar">
+    <java classname="com.colloquial.chars.NormalizeUnicode"
+          fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+
+  <target name="show-transliterations"
+          depends="jar">
+    <java classname="com.colloquial.chars.ShowTransliterations"
+          fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+  <property name="text"
+            value="taxi cab"/>
+  <property name="scheme"
+            value="Latin-Greek"/>
+
+  <target name="transliterate"
+          depends="jar">
+    <java classname="com.colloquial.chars.Transliterate"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${text}"/>
+      <arg value="${scheme}"/>
+    </java>
+  </target>
+
+
+  <property name="low.hex" value="0"/>
+  <property name="high.hex" value="FF"/>
+  <target name="unicode-properties"
+          depends="jar">
+    <java classname="com.colloquial.chars.UnicodeProperties"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${low.hex}"/>
+      <arg value="${high.hex}"/>
+    </java>
+  </target>
+
+  <target name="compare"
+          depends="jar">
+    <java classname="com.colloquial.chars.CompareStrings"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${s1}"/>
+      <arg value="${s2}"/>
+    </java>
+  </target>
+
+  <target name="collate"
+          depends="jar">
+    <java classname="com.colloquial.chars.CollateStrings"
+          fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+  <target name="compare2"
+          depends="jar">
+    <java classname="com.colloquial.chars.CompareComposites"
+          fork="true">
+      <classpath refid="classpath"/>
+    </java>
+  </target>
+
+  <property name="letters" value="AaB"/>
+  <target name="lex-sort"
+          depends="jar">
+    <java classname="com.colloquial.chars.NaturalSort"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${letters}"/>
+    </java>
+  </target>
+
+  <target name="case-fold-sort"
+          depends="jar">
+    <java classname="com.colloquial.chars.CaseFoldSort"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value="${letters}"/>
+    </java>
+  </target>
+
+</project>

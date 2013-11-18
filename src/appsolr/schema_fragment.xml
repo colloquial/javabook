@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<schema name="fragment_1" version="1.5">
+  <fields>
+    <field name="text" type="text_lcstem"
+           indexed="true" stored="true"
+           multiValued="true"/>
+
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+  </fields>
+
+  <types>
+    <!--Here is an example of a text field type that is equivalent to
+        the Lucene example in \refsec{token-demo}, which is a chain
+        of tokenizers and token filters that tokenizes on whitespace,
+        then converts the tokens to lower case, removes stopwords,
+        and applies an implementation of the Porter stemmer.  -->
+    <fieldType name="text_lcstem" class="solr.TextField"
+               positionIncrementGap="100">
+      <analyzer>
+        <tokenizer class="solr.WhitespaceTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.StopFilterFactory"
+                ignoreCase="true"
+                words="stopwords.txt"
+                enablePositionIncrements="true"/>
+        <filter class="solr.PorterStemFilterFactory"/>
+      </analyzer>
+    </fieldType>
+
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+  </types>
+
+</schema>

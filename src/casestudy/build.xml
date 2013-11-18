@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-casestudy-${version}.jar"/>
+
+  <path id="classpath">
+    <pathelement location="${jar}"/>
+    <pathelement location="../webchars/lib/jdom-2.0.4.jar"/>
+    <pathelement location="../applucene/lib/lucene-core-4.2.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-analyzers-common-4.2.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-misc-4.2.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-queryparser-4.2.1.jar"/>
+
+    <pathelement location="lib/solr-solrj-4.3.0.jar"/>
+    <pathelement location="lib/httpclient-4.2.3.jar"/>    
+    <pathelement location="lib/httpcore-4.2.2.jar"/>    
+    <pathelement location="lib/httpmime-4.2.3.jar"/>    
+    <pathelement location="lib/jcl-over-slf4j-1.6.6.jar" />
+    <pathelement location="lib/log4j-1.2.16.jar" />
+    <pathelement location="lib/noggit-0.5.jar" /> 
+    <pathelement location="lib/slf4j-api-1.6.6.jar"/>
+    <pathelement location="lib/slf4j-log4j12-1.6.6.jar" />
+  </path>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <classpath refid="classpath"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <property name="etext"
+            value="../../data/federalist-papers/pg1404.txt"/>
+  <property name="xml.dir"
+            value="../../data/federalist-papers/xml"/>
+  <target name="adhoc"
+          depends="jar">
+    <mkdir dir="${xml.dir}"/>
+    <java classname="com.colloquial.casestudy.FederalistParser"
+          fork="true">
+      <classpath refid="classpath"/>
+      <arg value ="${etext}"/>
+      <arg value ="${xml.dir}"/>
+    </java>
+  </target>
+
+  <property name="lucene.dir" 
+            value="../../data/federalist-papers/lucene"/>
+  <target name="index-papers"
+          depends="jar">
+    <java classname="com.colloquial.casestudy.IndexPapers"
+          classpathref="classpath"
+          fork="true">
+      <arg value ="${etext}"/>
+      <arg value="${lucene.dir}"/>
+    </java>
+  </target>
+
+  <property name="solr.url" 
+            value="http://localhost:8983/solr/core_fedpapers/"/>
+  <property name="log4j.props" 
+            location="log4j.properties"/>
+  <target name="solr-index-papers"
+          depends="jar">
+    <java classname="com.colloquial.casestudy.SolrJPapers"
+          classpathref="classpath"
+          fork="true">
+      <jvmarg value="-Dlog4j.configuration=FILE:///${log4j.props}"/>
+      <arg value ="${etext}"/>
+      <arg value="${solr.url}"/>
+    </java>
+  </target>
+
+
+</project>

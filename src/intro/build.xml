@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ASCII"?>
+<project>
+
+  <property name="version"
+            value="1.0"/>
+
+  <property name="jar"
+            value="build/tj-intro-${version}.jar"/>
+
+  <target name="clean">
+    <delete dir="build"/>
+    <delete file="toast.txt"/>
+  </target>
+
+  <target name="jar">
+    <mkdir dir="build/classes"/>
+    <javac debug="yes"
+           debuglevel="source,lines,vars"
+           destdir="build/classes"
+           includeantruntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <src path="src/"/>
+    </javac>
+    <jar destfile="${jar}">
+      <fileset dir="build/classes"
+               includes="**/*.class"/>
+    </jar>
+  </target>
+
+  <target name="hello"
+          depends="jar">
+    <java classname="com.colloquial.intro.HelloWorld"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+  <property name="first" value="Foo"/>
+  <property name="last" value="Bar"/>
+  <target name="hello-name"
+          depends="jar">
+    <java classname="com.colloquial.intro.HelloName"
+          classpath="${jar}"
+          fork="true">
+      <arg value="${first}"/>
+      <arg value="${last}"/>
+    </java>
+  </target>
+
+  <target name="test"
+          depends="jar">
+    <java classname="com.colloquial.intro.ConfigTest"
+          classpath="${jar}"
+          fork="true">
+    </java>
+  </target>
+
+</project>
