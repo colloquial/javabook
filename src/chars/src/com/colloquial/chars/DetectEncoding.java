@@ -31,18 +31,17 @@ public class DetectEncoding {
             CharsetMatch[] matches = detector.detectAll();
         /*x*/
             System.out.printf("\nencoding=%s # matches=%d\n",encoding,matches.length);
-        /*x DetectEncoding.3 */
+            /*x DetectEncoding.3 */
             for (CharsetMatch match : matches) {
                 String name = match.getName();
                 int conf = match.getConfidence();
                 String lang = match.getLanguage();
                 String text = match.getString();
-       /*x*/
+                /*x*/
                 System.out.printf("     guess=%s conf=%d lang=%s\n         chars=%s\n",
                                   name,conf,lang,toChars(text));
             }
         }
-        /*x*/
     }
 
     static String toChars(String text) {

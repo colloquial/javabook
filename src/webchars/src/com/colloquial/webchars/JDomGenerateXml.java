@@ -22,9 +22,11 @@ public class JDomGenerateXml {
 
     public static void main(String[] args) 
         throws IOException{
-
-        System.out.println("Encoding: "+args[0]);
-        System.out.println("Output file: "+args[1]);
+        
+        String encoding = args[0];
+        String fileName = args[1];
+        System.out.println("Encoding: " + encoding);
+        System.out.println("Output file: "+ fileName);
 
         /*x JDomGenerateXml.2*/
         Element root = new Element("toast_set");
@@ -36,7 +38,6 @@ public class JDomGenerateXml {
         e1.setAttribute("lang","English");
         e1.addContent(new Text(CHEERS));
         root.addContent(e1);
-        /*x*/
 
         Element e2 = new Element("toast");
         e2.setAttribute("lang","French");
@@ -52,14 +53,15 @@ public class JDomGenerateXml {
         e4.setAttribute("lang","Korean");
         e4.addContent(new Text(GAMBAE));
         root.addContent(e4);
+        /*x*/
 
         /*x JDomGenerateXml.4*/
         Format format = Format.getPrettyFormat();
-        format.setEncoding(args[0]);
+        format.setEncoding(encoding);
         FileOutputStream fileOut
-            = new FileOutputStream(args[1]);
+            = new FileOutputStream(fileName);
         OutputStreamWriter writer
-            = new OutputStreamWriter(fileOut,args[0]);
+            = new OutputStreamWriter(fileOut,encoding);
         BufferedWriter bufWriter 
             = new BufferedWriter(writer);
         XMLOutputter outputter
