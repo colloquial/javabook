@@ -53,12 +53,14 @@ public class LuceneDelete {
         int numDocsAfterDeleteBeforeCommit = indexWriter.numDocs();
         indexWriter.commit();
         indexWriter.close();
-        indexWriter = null;
 
-        indexWriter = new IndexWriter(fsDir,iwConf);
-        int numDocsAfter = indexWriter.numDocs();
-        indexWriter.close();
-        indexWriter = null;
+        IndexWriterConfig iwConf2 
+            = new IndexWriterConfig(Version.LUCENE_45,stdAn);
+        iwConf2.setOpenMode(IndexWriterConfig.OpenMode.APPEND);
+        IndexWriter indexWriter2
+            = new IndexWriter(fsDir,iwConf2);
+        int numDocsAfter = indexWriter2.numDocs();
+        indexWriter2.close();
         /*x*/
 
         System.out.println("num docs before delete=" + numDocsBefore);
