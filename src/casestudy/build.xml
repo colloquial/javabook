@@ -10,12 +10,12 @@
   <path id="classpath">
     <pathelement location="${jar}"/>
     <pathelement location="../webchars/lib/jdom-2.0.4.jar"/>
-    <pathelement location="../applucene/lib/lucene-core-4.2.1.jar"/>
-    <pathelement location="../applucene/lib/lucene-analyzers-common-4.2.1.jar"/>
-    <pathelement location="../applucene/lib/lucene-misc-4.2.1.jar"/>
-    <pathelement location="../applucene/lib/lucene-queryparser-4.2.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-core-4.5.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-analyzers-common-4.5.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-misc-4.5.1.jar"/>
+    <pathelement location="../applucene/lib/lucene-queryparser-4.5.1.jar"/>
 
-    <pathelement location="lib/solr-solrj-4.3.0.jar"/>
+    <pathelement location="lib/solr-solrj-4.5.0.jar"/>
     <pathelement location="lib/httpclient-4.2.3.jar"/>    
     <pathelement location="lib/httpcore-4.2.2.jar"/>    
     <pathelement location="lib/httpmime-4.2.3.jar"/>    

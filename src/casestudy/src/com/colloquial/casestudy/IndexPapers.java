@@ -54,9 +54,9 @@ public class IndexPapers {
         Directory fsDir = FSDirectory.open(indexDir);
 
         Analyzer stdAn 
-            = new StandardAnalyzer(Version.LUCENE_42);
+            = new StandardAnalyzer(Version.LUCENE_45);
         IndexWriterConfig iwConf 
-            = new IndexWriterConfig(Version.LUCENE_42,stdAn);
+            = new IndexWriterConfig(Version.LUCENE_45,stdAn);
 
         iwConf.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         IndexWriter indexWriter
