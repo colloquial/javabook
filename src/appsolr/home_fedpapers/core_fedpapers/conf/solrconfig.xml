@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>LUCENE_45</luceneMatchVersion>
+  <luceneMatchVersion>4.5</luceneMatchVersion>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.StandardDirectoryFactory}"/>
 
   <lib dir="../../lib/" regex=".*\.jar" />

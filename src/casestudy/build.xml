@@ -15,7 +15,8 @@
     <pathelement location="../applucene/lib/lucene-misc-4.5.1.jar"/>
     <pathelement location="../applucene/lib/lucene-queryparser-4.5.1.jar"/>
 
-    <pathelement location="lib/solr-solrj-4.5.0.jar"/>
+<!--    <pathelement location="lib/solr-core-4.5.1.jar"/> -->
+    <pathelement location="lib/solr-solrj-4.5.1.jar"/>
     <pathelement location="lib/httpclient-4.2.3.jar"/>    
     <pathelement location="lib/httpcore-4.2.2.jar"/>    
     <pathelement location="lib/httpmime-4.2.3.jar"/>    
