@@ -15,7 +15,6 @@
     <pathelement location="../applucene/lib/lucene-misc-4.5.1.jar"/>
     <pathelement location="../applucene/lib/lucene-queryparser-4.5.1.jar"/>
 
-<!--    <pathelement location="lib/solr-core-4.5.1.jar"/> -->
     <pathelement location="lib/solr-solrj-4.5.1.jar"/>
     <pathelement location="lib/httpclient-4.2.3.jar"/>    
     <pathelement location="lib/httpcore-4.2.2.jar"/>    
@@ -51,7 +50,7 @@
             value="../../data/federalist-papers/pg1404.txt"/>
   <property name="xml.dir"
             value="../../data/federalist-papers/xml"/>
-  <target name="adhoc"
+  <target name="parse-papers"
           depends="jar">
     <mkdir dir="${xml.dir}"/>
     <java classname="com.colloquial.casestudy.FederalistParser"
