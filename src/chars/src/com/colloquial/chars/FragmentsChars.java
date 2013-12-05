@@ -93,8 +93,8 @@ class FragmentsChars {
     void frag9() {
         /*x FragmentsChars.9 */
         \u0069\u006E\u0074\u0020\u006E\u0020\u003D\u0020\u0031\u003B
-            /*x*/
-            }
+        /*x*/
+    }
 
     void frag10() {
         /*x FragmentsChars.10 */
