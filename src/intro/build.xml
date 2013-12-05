@@ -9,7 +9,6 @@
 
   <target name="clean">
     <delete dir="build"/>
-    <delete file="toast.txt"/>
   </target>
 
   <target name="jar">
