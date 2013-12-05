@@ -1,3 +1,4 @@
+package com.colloquial.io;
 import java.io.*;
 
 class FragmentsIo {
