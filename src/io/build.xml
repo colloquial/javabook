@@ -81,7 +81,7 @@
   <property name="file.out" value="file.out.tmp"/>
   <target name="copy-files"
           depends="jar">
-    <java classname="com.colloquial.io.FileProperties"
+    <java classname="com.colloquial.io.CopyFile"
           classpath="${jar}"
           fork="true">
       <classpath refid="classpath"/>
