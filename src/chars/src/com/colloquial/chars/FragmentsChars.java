@@ -1,4 +1,4 @@
-package com.aliasi.lingpipe.chars;
+package com.colloquial.chars;
 
 import java.nio.CharBuffer;
 
