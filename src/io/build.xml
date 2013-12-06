@@ -203,7 +203,7 @@
   <property name="resource.name"
             value="hello.txt"/>
   <target name="resource-input"
-          depends="jar">
+          depends="jar,example-resource-jar">
     <java classname="com.colloquial.io.ResourceInput"
           fork="true">
       <classpath>
