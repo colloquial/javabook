@@ -172,7 +172,7 @@
       
   
   <target name="file-zip-view"
-          depends="jar">
+          depends="jar,example-zip">
     <java classname="com.colloquial.io.FileZipView"
           classpath="${jar}"
           fork="true">
