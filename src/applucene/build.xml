@@ -108,7 +108,6 @@
     </java>
   </target>
 
-
   <property name="train.dir"
             value="../../data/20news-bydate-train"/>
   <property name="test.dir"
@@ -118,7 +117,7 @@
   <property name="analyzer" 
             value="lc"/>
   <target name="classify"
-          depends="jar">
+          depends="jar, gunzip-news">
     <java classname="com.colloquial.applucene.ClassifyNewsgroups"
           classpathref="classpath"
           fork="true">
@@ -129,5 +128,22 @@
     </java>
   </target>
 
+  <property name="20news.tgz"
+            value="../../data/20news-bydate.tar.gz"/>
+  <target name="gunzip-news" depends="check-tgz" if="20news-needs-unpacked">
+    <untar src="${20news.tgz}"
+           dest="../../data"
+           compression="gzip" />
+  </target>
+
+  <property name="20news-data"
+            value="../../data/20news-bydate-train"/>
+  <target name="check-tgz">
+    <condition property="20news-needs-unpacked">
+      <not>
+        <available file="${20news-data}" type="dir"/>
+      </not>
+    </condition>
+  </target>
 
 </project>
