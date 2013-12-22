@@ -21,14 +21,14 @@ public class RegexFindVerbose {
             int start = matcher.start();
             int end = matcher.end();
             String found = matcher.group();
-	    System.out.println("matched: |" + found + "|"
+            System.out.println("matched: |" + found + "|"
                                + " at (" + start + "," + end + ")");
             /*x RegexFindVerbose.1 */
             matcher.appendReplacement(sb,"");
             sb.setLength(0);
             matcher.appendTail(sb);
             /*x*/
-	    System.out.println("remaining: |" + sb.toString() + "|");
+            System.out.println("remaining: |" + sb.toString() + "|");
         }
     }
 

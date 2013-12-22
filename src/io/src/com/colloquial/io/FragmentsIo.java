@@ -122,9 +122,9 @@ class FragmentsIo {
     void a5() throws IOException {
         /*x FragmentsIo.16 */
         OutputStreamWriter outWriter 
-	    = new OutputStreamWriter(System.out,"UTF-8");
+            = new OutputStreamWriter(System.out,"UTF-8");
         PrintWriter out 
-	    = new PrintWriter(outWriter,true);
+            = new PrintWriter(outWriter,true);
         /*x*/
     }
 
