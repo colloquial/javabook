@@ -16,7 +16,8 @@ public class JDomGenerateXml {
     /*x JDomGenerateXml.1*/
     public static String CHEERS = "cheers!";
     public static String SANTE = "sant\u00e9!";
-    public static String NAZDROV = "\u041d\u0430 \u0437\u0434\u043e\u0440\u0432\u044c!";
+    public static String NAZDROV = "\u041d\u0430 " +
+        "\u0437\u0434\u043e\u0440\u0432\u044c!";
     public static String GAMBAE = "\uac74\ubc30!";
     /*x*/
 
