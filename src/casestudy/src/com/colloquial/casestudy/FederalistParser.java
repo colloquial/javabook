@@ -57,7 +57,8 @@ public class FederalistParser {
     /*x*/
 
     /*x FederalistParser.3 */
-    public static final String START_PAPER = "FEDERALIST No.";
+    public static final String START_PAPER 
+        = "FEDERALIST No.";
     public static final String END_OF_BOOK
         = "End of the Project Gutenberg";
 
@@ -69,10 +70,9 @@ public class FederalistParser {
         InputStreamReader inReader = null;
         BufferedReader bufReader = null;
         try {
-            inStream = new FileInputStream(inFile);
-            inReader = new InputStreamReader(inStream,
-                                             INPUT_ENCODING);
-            bufReader = new BufferedReader(inReader);
+            /*bbf*/inStream = new FileInputStream(inFile);/*ebf*/
+            /*bbf*/inReader = new InputStreamReader(inStream,INPUT_ENCODING);/*ebf*/
+            /*bbf*/bufReader = new BufferedReader(inReader);/*ebf*/
 
             // read from beginning of file to start of paper #1
             String line = null;
@@ -82,8 +82,8 @@ public class FederalistParser {
             if (line == null) 
                 throw new IOException("unexpected EOF");
 
-            StringBuilder paragraph = new StringBuilder();
-            ArrayList<String> parsList = new ArrayList<String>(); 
+            /*bbf*/StringBuilder paragraph = new StringBuilder();/*ebf*/
+            /*bbf*/ArrayList<String> parsList = new ArrayList<String>();/*ebf*/
 
             int ct = 0;
             // process all papers
@@ -106,7 +106,7 @@ public class FederalistParser {
                 // get this paper
                 ct++;
                 parsList.add(line);  // header line 
-                while ((line = bufReader.readLine()) != null) {
+                /*bbf*/while/*ebf*/ ((line = bufReader.readLine()) != null) {
                     if (line.startsWith(START_PAPER)) break;
                     if (line.startsWith(END_OF_BOOK)) break;
                     if ("".equals(line)) {
@@ -115,7 +115,7 @@ public class FederalistParser {
                             paragraph.setLength(0);
                         }
                     } else {
-                        paragraph.append(line + " ");
+                        /*bbf*/paragraph.append(line + " ");/*ebf*/
                     }
                 }
             }
@@ -131,68 +131,71 @@ public class FederalistParser {
                                        + ct);
                 }
             }
-        } finally {
-            close(bufReader);
-            close(inReader);
-            close(inStream);
+        } /*bbf*/finally/*ebf*/ {
+           /*bbf*/close(bufReader);/*ebf*/
+           /*bbf*/close(inReader);/*ebf*/
+           /*bbf*/close(inStream);/*ebf*/
         }
         return papers;
     }
     /*x*/
 
     /*x FederalistParser.4 */
-    // process list of paragraphs
-    // first 5 contain header information, rest are body
-    public Paper parsePaper(List<String> pars) {
+    static final String regexPaper 
+        = "FEDERALIST No. (\\d+).*";
+    static final Pattern patternPaper = Pattern.compile(regexPaper);
 
+    static final String regexPub
+        = "\\w+ ([^\\.]+)\\. \\w+, ([^\\.]+).*";
+    static final Pattern patternPub = Pattern.compile(regexPub);
+
+    static final String regexAuthor
+        = "(\\w+)(?:, with (\\w+))?.*";
+    static final Pattern patternAuthor = Pattern.compile(regexAuthor);
+    /*x*/
+
+    /*x FederalistParser.5 */
+    // process list of paragraphs
+    // first 5 list entries contain header information, rest are body
+    public Paper parsePaper(List<String> pars) {
         String header = pars.remove(0);
         String number = null;
-        String regex = "FEDERALIST No. (\\d+).*";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(header);
+        Matcher matcher = patternPaper.matcher(header);
         if (matcher.matches()) {
             number = matcher.group(1);
         }
-
         String title = pars.remove(0);
-
         String publication = pars.remove(0);
         String pubName = null;
         String pubDate = null;
-        regex = "\\w+ ([^\\.]+)\\. \\w+, ([^\\.]+).*";
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(publication);
+        matcher = patternPub.matcher(publication);
         if (matcher.matches()) {
             pubName = matcher.group(1);
             pubDate = matcher.group(2);
         }
-
         String author = pars.remove(0);
         String author1 = null;
         String author2 = null;
-        regex = "(\\w+)(?:, with (\\w+))?.*";
-        pattern = Pattern.compile(regex);
-        matcher = pattern.matcher(author);
+        matcher = patternAuthor.matcher(author);
         if (matcher.matches()) {
             author1 = matcher.group(1);
             author2 = matcher.group(2);
         }
-
         pars.remove(0);         // skip salutation 
-
         return new Paper.Builder(number).title(title)
             .pubName(pubName).pubDate(pubDate)
             .author1(author1).author2(author2)
             .paragraphs(pars).build();
     }
     /*x*/
-    /*x FederalistParser.5 */
+
+    /*x FederalistParser.6 */
     public void paperToXml(Paper paper, File outDir) 
         throws IOException {
 
         // pad paper number so that files sort nicely
         String numPaper 
-            = String.format("%02d",paper.getNumber());
+            = /*bbf*/String.format("%02d",paper.getNumber());/*ebf*/
         String filename = "paper_" + numPaper + ".xml";
         File outFile = new File(outDir,filename);
 
@@ -205,8 +208,8 @@ public class FederalistParser {
                                                OUTPUT_ENCODING);
             bufWriter = new BufferedWriter(outWriter);
 
-            Format format = Format.getPrettyFormat();
-            format.setEncoding(OUTPUT_ENCODING);
+            /*bbf*/Format format = Format.getPrettyFormat();/*ebf*/
+            /*bbf*/format.setEncoding(OUTPUT_ENCODING);/*ebf*/
             XMLOutputter outputter
                 = new XMLOutputter(format);
             Element root = new Element("add");
@@ -221,7 +224,7 @@ public class FederalistParser {
     }
     /*x*/
 
-    /*x FederalistParser.6 */
+    /*x FederalistParser.7 */
     void close(Closeable c) {
         if (c == null) return;
         try {

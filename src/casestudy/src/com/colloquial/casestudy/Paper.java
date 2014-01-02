@@ -62,10 +62,10 @@ public class Paper {
         }
         public Builder pubDate(String str) {
             if (str == null) return this;
-            String pattern = "MMMMM dd, yyyy";
-            SimpleDateFormat format 
-                = new SimpleDateFormat(pattern,Locale.ENGLISH);
-            Date date = format.parse(str, new ParsePosition(0));
+            /*bbf*/String pattern = "MMMMM dd, yyyy";/*ebf*/
+            /*bbf*/SimpleDateFormat format/*ebf*/
+                /*bbf*/= new SimpleDateFormat(pattern,Locale.ENGLISH);/*ebf*/
+            /*bbf*/Date date = format.parse(str, new ParsePosition(0));/*ebf*/
             pubDate = date; return this;
         }
         public Builder author1(String str) {
