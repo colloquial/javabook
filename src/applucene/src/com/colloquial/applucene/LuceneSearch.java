@@ -45,7 +45,6 @@ public class LuceneSearch {
         Directory fsDir = FSDirectory.open(indexDir);
         DirectoryReader reader = DirectoryReader.open(fsDir);
         IndexSearcher searcher = new IndexSearcher(reader);
-
         Analyzer stdAn 
             = new StandardAnalyzer(Version.LUCENE_45);
         QueryParser parser 
@@ -58,7 +57,6 @@ public class LuceneSearch {
         ScoreDoc[] scoreDocs = hits.scoreDocs;
         System.out.println("hits=" + scoreDocs.length);
         System.out.println("Hits (rank,score,paper)");
-
         for (int n = 0; n < scoreDocs.length; ++n) {
             ScoreDoc sd = scoreDocs[n];
             float score = sd.score;

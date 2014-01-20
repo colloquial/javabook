@@ -161,7 +161,6 @@ public class ClassifyNewsgroups {
 
         int[][] confusionMatrix
             = new int[NEWSGROUPS.length][NEWSGROUPS.length];
-
         File[] groupsDir = testDir.listFiles();
         for (File group : groupsDir) {
             int postCt = 0;
@@ -176,7 +175,6 @@ public class ClassifyNewsgroups {
                 BooleanQuery termsQuery 
                     = buildQuery(post.subject() 
                                  + " " + post.body());
-
                 // only get first-best result
                 TopDocs hits = searcher.search(termsQuery,1);
                 ScoreDoc[] scoreDocs = hits.scoreDocs;
@@ -192,10 +190,6 @@ public class ClassifyNewsgroups {
                 }
             }
     /*x*/
-            //            System.out.println("test items for " + groupName + ": " + postCt);
-            //            System.out.printf("%s: %5.3f\n",
-            //                              groupName,
-            //                              ((confusionMatrix[rowIdx][rowIdx]*1.0d)/(postCt*1.0d)));
             System.out.print(groupName);
             for (int i=0; i<NEWSGROUPS.length; i++) 
                  System.out.printf("| %4d ", confusionMatrix[rowIdx][i]);
